@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_painter/src/controller/canvas.controller.dart';
 import 'package:flutter_painter/src/elements/base.element.dart';
+import 'package:flutter_painter/src/elements/path.element.dart';
 
 class DrawCanvas extends StatelessWidget {
   final CanvasController controller = CanvasController.instance();
@@ -32,7 +33,9 @@ class LayerPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     for (BaseElement element in elements!) {
-      canvas.drawPath(element.path, element.paint);
+      if (element is PathElement) {
+        canvas.drawPath(element.path, element.paint);
+      }
     }
   }
 

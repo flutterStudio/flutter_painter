@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_painter/src/elements/path.element.dart';
 
 import '../elements/base.element.dart';
 
@@ -33,10 +34,11 @@ class CanvasController {
   void addElement(Color color, List<Offset> points,
       {DrawMode drawMode = DrawMode.filled}) {
     int id = _generateId();
-    BaseElement element = BaseElement(id, points, Paint()..color = color,
-        vertexMode: drawMode == DrawMode.filled
-            ? VertexMode.triangles
-            : VertexMode.triangleStrip);
+    BaseElement element = PathElement(
+      id,
+      points,
+      Paint()..color = color,
+    );
     _elements[id] = element;
     _elementsStream.sink.add(_elements.values.toList());
   }

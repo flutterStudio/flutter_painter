@@ -6,14 +6,20 @@ import 'package:flutter_painter/src/controller/canvas.controller.dart';
 import 'package:flutter_painter/src/elements/base.element.dart';
 
 class DrawCanvas extends StatelessWidget {
+  final CanvasController controller = CanvasController.instance();
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<BaseElement>>(
-      builder: (context, snapshot) => CustomPaint(
-        isComplex: true,
-        painter: LayerPainter(elements: snapshot.data),
+      builder: (context, snapshot) => Listener(
+        onPointerUp: (pointer) {
+          controller.handleClick(pointer.position);
+        },
+        child: CustomPaint(
+          isComplex: true,
+          painter: LayerPainter(elements: snapshot.data),
+        ),
       ),
-      stream: CanvasController.instance().elementsStream,
+      stream: controller.elementsStream,
     );
   }
 }
@@ -26,7 +32,7 @@ class LayerPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     for (BaseElement element in elements!) {
-      canvas.drawVertices(element.vertices, BlendMode.color, element.paint);
+      canvas.drawPath(element.path, element.paint);
     }
   }
 

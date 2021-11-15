@@ -27,7 +27,14 @@ class CanvasController {
   Stream<List<BaseElement>> get elementsStream => _elementsStream.stream;
   late Map<int, BaseElement> _elements;
 
-  void handleClick(Offset position) {}
+  void handleClick(Offset position) {
+    PathElement? clickedElement = _elements.values.firstWhere(
+        (element) => element is PathElement && element.path.contains(position),
+        orElse: null) as PathElement;
+
+    clickedElement.onClickUp(position);
+    _rebuild();
+  }
 
   ///
   /// Create a simple element using a [color] and a list of [points].
@@ -64,5 +71,9 @@ class CanvasController {
 
   void dispose() {
     _elementsStream.close();
+  }
+
+  void _rebuild() {
+    _elementsStream.sink.add(_elements.values.toList());
   }
 }

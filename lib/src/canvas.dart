@@ -35,6 +35,13 @@ class LayerPainter extends CustomPainter {
     for (BaseElement element in elements!) {
       if (element is PathElement) {
         canvas.drawPath(element.path, element.paint);
+        if (element.boundries != null) {
+          canvas.drawPath(
+              element.boundries!,
+              element.paint
+                ..color = Colors.green
+                ..style = PaintingStyle.stroke);
+        }
       }
     }
   }
